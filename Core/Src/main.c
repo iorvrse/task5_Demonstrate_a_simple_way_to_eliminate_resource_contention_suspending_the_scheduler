@@ -90,6 +90,7 @@ void Delay_ms(uint32_t milliseconds) {
 uint8_t flagg = 1;
 void accessData(){
 	taskENTER_CRITICAL();
+	HAL_GPIO_WritePin(lampu_GPIO_Port, lampu_Pin, 1);
 	if(flagg == 1) flagg = 0;
 	else{
 		HAL_GPIO_WritePin(Blue_LED_GPIO_Port, Blue_LED_Pin, 0);
@@ -101,6 +102,7 @@ void accessData(){
 //	HAL_Delay(500);
 	Delay_ms(500);
 	flagg = 1;
+	HAL_GPIO_WritePin(lampu_GPIO_Port, lampu_Pin, 0);
 	taskEXIT_CRITICAL();
 }
 
@@ -263,7 +265,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(Blue_LED_GPIO_Port, Blue_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, Green_LED_Pin|Red_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, Green_LED_Pin|Red_LED_Pin|lampu_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : Blue_LED_Pin */
   GPIO_InitStruct.Pin = Blue_LED_Pin;
@@ -272,8 +274,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(Blue_LED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Green_LED_Pin Red_LED_Pin */
-  GPIO_InitStruct.Pin = Green_LED_Pin|Red_LED_Pin;
+  /*Configure GPIO pins : Green_LED_Pin Red_LED_Pin lampu_Pin */
+  GPIO_InitStruct.Pin = Green_LED_Pin|Red_LED_Pin|lampu_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
